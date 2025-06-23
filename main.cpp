@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>r>
 #include <SDL2/SDL_mixer.h>
 #include <string>
+#include <thread>
 
 std::vector<Mix_Chunk*> tones(100);
 const int screen_width = 960;
@@ -81,10 +82,11 @@ void print(std::vector<int>& arr, SDL_Renderer* render, int delay)
             ++first_prefix;
             SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
         }
+
         SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
         SDL_RenderClear(render);
         renderArray(render, arr);
-        SDL_Delay(delay);
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
     }
 
@@ -149,8 +151,12 @@ int main(int argc, char* argv[])
     SDL_Event e;
     int delay;
     std::cout << "R TO SHUFFLE K TO START" << std::endl;
-    std::cout << "How much delay between shuffles: ";
+    std::cout << "How much delay between shuffles: (0 for no delay)";
     std::cin >> delay;
+    if (delay == 0)
+    {
+
+    }
     renderArray(renderer, arr);
 
 
