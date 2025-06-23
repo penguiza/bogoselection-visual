@@ -6,7 +6,10 @@
 #include <vector>
 #include <utility>
 #include <SDL2/SDL.h>r>
+#include <SDL2/SDL_mixer.h>
+#include <string>
 
+std::vector<Mix_Chunk*> tones(100);
 const int screen_width = 960;
 const int screen_height = 540;
 
@@ -73,6 +76,8 @@ void print(std::vector<int>& arr, SDL_Renderer* render)
             std::shuffle(arr.begin() + first_prefix, arr.end(), generator);
         }
         else if (arr[target] == arr[first_prefix]) {
+            int value = arr[first_prefix];
+            Mix_PlayChannel(-1, tones[value - 1], 0);
             ++first_prefix;
         }
         SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
@@ -90,14 +95,28 @@ int main(int argc, char* argv[])
 {
 
     std::vector<int> arr(100);
+   
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "SDL_mixer failed: " << Mix_GetError() << '\n';
+        SDL_Quit();
+        return 1;
+    }
+
+    for (int i = 0; i < tones.size(); ++i)
+    {
+        std::string file_name = "tones/note_" + std::to_string(i + 1) + ".wav";
+        tones[i] = Mix_LoadWAV(file_name.c_str());
+    }
+
+  
 
     for (int i = 0; i < arr.size(); ++i)
     {
         arr[i] = i + 1;
     }
     std::shuffle(arr.begin(), arr.end(), generator);
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+        std::cerr << "SDL failed: " << SDL_GetError() << '\n';
         return 1;
     }
 
@@ -158,6 +177,9 @@ int main(int argc, char* argv[])
 
 
     }
+
+    for (auto* chunk : tones)
+        Mix_FreeChunk(chunk);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
