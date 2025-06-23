@@ -73,6 +73,27 @@ cmake --build .
 
 ---
 
+### Download and Place Sound Files
+
+The sound files are included in the repository under the `tones/` folder. However, for the program to work correctly, the `tones/` folder **must** be placed in the same directory as the compiled executable.
+
+After building the project, your directory structure should look like this:
+
+sortviz/
+├── main.cpp
+├── CMakeLists.txt
+├── tones/ ← Place the tones/ folder here (next to the executable)
+│ ├── note_1.wav
+│ ├── note_2.wav
+│ └── note_100.wav
+└── build/ ← Compiled executable 
+
+javascript
+Copy
+Edit
+
+Make sure that the `tones/` folder is located in the **same directory as the executable** (inside the `build/` folder, or wherever the `.exe` is located).
+
 ## 🎮 Controls
 
 | Key | Action              |
