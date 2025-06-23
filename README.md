@@ -57,7 +57,7 @@ cd vcpkg
 ### 3. Clone this project
 
 ```bash
-git clone https://github.com/your-username/bogosort_visualisation.git
+git clone https://github.com/penguiza/bogosort_visualisation.git
 cd bogosort_visualisation
 ```
 
