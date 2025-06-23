@@ -82,16 +82,6 @@ cmake --build .
 | `ESC` or close window | Quit the application  |
 
 ---
-
-## 📁 Project Structure
-
-```
-bogosort_visualisation/
-├── main.cpp
-├── CMakeLists.txt
-├── README.md
-└── .gitignore
-```
 ---
 
 ## 📄 License
