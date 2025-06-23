@@ -63,7 +63,7 @@ bool is_sorted(const std::vector<int>& arr) {
     return true;
 }
 
-void print(std::vector<int>& arr, SDL_Renderer* render)
+void print(std::vector<int>& arr, SDL_Renderer* render, int delay)
 {
 
     int first_prefix = 0;
@@ -83,6 +83,7 @@ void print(std::vector<int>& arr, SDL_Renderer* render)
         SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
         SDL_RenderClear(render);
         renderArray(render, arr);
+        SDL_Delay(delay);
 
     }
 
@@ -95,7 +96,7 @@ int main(int argc, char* argv[])
 {
 
     std::vector<int> arr(100);
-   
+    
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "SDL_mixer failed: " << Mix_GetError() << '\n';
         SDL_Quit();
@@ -145,7 +146,10 @@ int main(int argc, char* argv[])
 
     bool quit = false;
     SDL_Event e;
-
+    int delay;
+    std::cout << "R TO SHUFFLE K TO START" << std::endl;
+    std::cout << "How much delay between shuffles: ";
+    std::cin >> delay;
     renderArray(renderer, arr);
 
 
@@ -161,7 +165,7 @@ int main(int argc, char* argv[])
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderClear(renderer);
 
-                    print(arr, renderer);
+                    print(arr, renderer, delay);
                     SDL_Delay(100);
                 }
                 if (e.key.keysym.sym == SDLK_r) {
@@ -169,6 +173,9 @@ int main(int argc, char* argv[])
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderClear(renderer);
                     renderArray(renderer, arr);
+                }
+                if (e.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = true;
                 }
 
             }
