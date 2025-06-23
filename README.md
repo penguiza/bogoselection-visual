@@ -6,7 +6,8 @@ This project visualizes the infamous **Bogosort** algorithm using SDL2 and C++. 
 
 ## 📷 Preview
 
-_(Insert a screenshot or GIF here if you want!)_
+![image](https://github.com/user-attachments/assets/563cca71-1e9c-4cf0-9cbc-7fb2e89a7913)
+
 
 ---
 
