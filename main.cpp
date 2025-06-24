@@ -10,7 +10,7 @@
 #include <string>
 #include <thread>
 
-std::vector<Mix_Chunk*> tones(100);
+std::vector<Mix_Chunk*> tones(1000);
 const int screen_width = 960;
 const int screen_height = 540;
 
@@ -71,6 +71,14 @@ void print(std::vector<int>& arr, SDL_Renderer* render, int delay)
 
     while (!is_sorted(arr))
     {
+        SDL_Event e;
+        while (SDL_PollEvent(&e) != 0)
+        {
+            if (e.type == SDL_QUIT) {
+                return; // Exit the print function if the window is closed
+            }
+        }
+
         auto target = find_lowest(arr, first_prefix);
 
         if (arr[target] != arr[first_prefix]) {
@@ -97,8 +105,14 @@ void print(std::vector<int>& arr, SDL_Renderer* render, int delay)
 
 int main(int argc, char* argv[])
 {
-
-    std::vector<int> arr(100);
+    int size = 0;
+    int delay;
+    std::cout << "R TO SHUFFLE K TO START" << std::endl;
+    std::cout << "How much delay between shuffles: (0 for no delay) ";
+    std::cin >> delay;
+    std::cout << "How many bars: ";
+    std::cin >> size;
+    std::vector<int> arr(size);
     
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "SDL_mixer failed: " << Mix_GetError() << '\n';
@@ -106,7 +120,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    for (int i = 0; i < tones.size(); ++i)
+    for (int i = tones.size() - arr.size(); i < tones.size(); ++i)
     {
         std::string file_name = "tones/note_" + std::to_string(i + 1) + ".wav";
         tones[i] = Mix_LoadWAV(file_name.c_str());
@@ -149,14 +163,6 @@ int main(int argc, char* argv[])
 
     bool quit = false;
     SDL_Event e;
-    int delay;
-    std::cout << "R TO SHUFFLE K TO START" << std::endl;
-    std::cout << "How much delay between shuffles: (0 for no delay)";
-    std::cin >> delay;
-    if (delay == 0)
-    {
-
-    }
     renderArray(renderer, arr);
 
 
@@ -173,7 +179,6 @@ int main(int argc, char* argv[])
                     SDL_RenderClear(renderer);
 
                     print(arr, renderer, delay);
-                    SDL_Delay(100);
                 }
                 if (e.key.keysym.sym == SDLK_r) {
                     std::shuffle(arr.begin(), arr.end(), generator);
