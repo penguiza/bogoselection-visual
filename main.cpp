@@ -10,7 +10,7 @@
 #include <string>
 #include <thread>
 
-std::vector<Mix_Chunk*> tones(1000);
+int size = 0;
 const int screen_width = 960;
 const int screen_height = 540;
 
@@ -97,15 +97,12 @@ void print(std::vector<int>& arr, SDL_Renderer* render, int delay)
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
     }
-
-
-
 }
 
 
 int main(int argc, char* argv[])
 {
-    int size = 0;
+  
     int delay;
     std::cout << "R TO SHUFFLE K TO START" << std::endl;
     std::cout << "How much delay between shuffles: (0 for no delay) ";
@@ -113,6 +110,7 @@ int main(int argc, char* argv[])
     std::cout << "How many bars: ";
     std::cin >> size;
     std::vector<int> arr(size);
+    std::vector<Mix_Chunk*> tones(size);
     
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "SDL_mixer failed: " << Mix_GetError() << '\n';
